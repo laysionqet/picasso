@@ -498,6 +498,11 @@ public class Picasso {
     dispatcher.dispatchSubmit(action);
   }
 
+  public void clearCache() {
+    cache.clear();
+  }
+
+  public
   Bitmap quickMemoryCacheCheck(String key) {
     Bitmap cached = cache.get(key);
     if (cached != null) {
