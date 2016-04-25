@@ -28,6 +28,12 @@ import static java.util.Collections.unmodifiableList;
 public final class Request {
   private static final long TOO_LONG_LOG = TimeUnit.SECONDS.toNanos(5);
 
+  public final String getGeneratedKey() {
+    return this.generatedKey;
+  }
+
+  /** Generated key, mapped to this request, for searching cached bitmap */
+  String generatedKey;
   /** A unique ID for the request. */
   int id;
   /** The time that the request was first submitted (in nanos). */
@@ -171,6 +177,10 @@ public final class Request {
       return String.valueOf(uri.getPath());
     }
     return Integer.toHexString(resourceId);
+  }
+
+  boolean hasImage() {
+    return uri != null || resourceId != 0;
   }
 
   public boolean hasSize() {

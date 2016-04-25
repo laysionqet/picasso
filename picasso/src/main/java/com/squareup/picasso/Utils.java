@@ -28,6 +28,7 @@ import android.os.Message;
 import android.os.Process;
 import android.os.StatFs;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -177,6 +178,9 @@ final class Utils {
   }
 
   static String createKey(Request data, StringBuilder builder) {
+    if (!TextUtils.isEmpty(data.generatedKey)) {
+      return data.generatedKey;
+    }
     if (data.stableKey != null) {
       builder.ensureCapacity(data.stableKey.length() + KEY_PADDING);
       builder.append(data.stableKey);
@@ -215,7 +219,9 @@ final class Utils {
       }
     }
 
-    return builder.toString();
+    String ret = builder.toString();
+    data.generatedKey = ret;
+    return ret;
   }
 
   static void closeQuietly(InputStream is) {

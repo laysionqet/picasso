@@ -631,8 +631,8 @@ public class RequestCreator {
    * <em>Note:</em> This method keeps a weak reference to the {@link ImageView} instance and will
    * automatically support object recycling.
    */
-  public void into(ImageView target) {
-    into(target, null);
+  public Request into(ImageView target) {
+    return into(target, null);
   }
 
   /**
@@ -644,7 +644,7 @@ public class RequestCreator {
    * you use this method, it is <b>strongly</b> recommended you invoke an adjacent
    * {@link Picasso#cancelRequest(android.widget.ImageView)} call to prevent temporary leaking.
    */
-  public void into(ImageView target, Callback callback) {
+  public Request into(ImageView target, Callback callback) {
     long started = System.nanoTime();
     checkMain();
 
@@ -657,7 +657,7 @@ public class RequestCreator {
       if (setPlaceholder) {
         setPlaceholder(target, getPlaceholderDrawable());
       }
-      return;
+      return null;
     }
 
     if (deferred) {
@@ -671,7 +671,7 @@ public class RequestCreator {
           setPlaceholder(target, getPlaceholderDrawable());
         }
         picasso.defer(target, new DeferredRequestCreator(this, target, callback));
-        return;
+        return null;
       }
       data.resize(width, height);
     }
@@ -690,7 +690,7 @@ public class RequestCreator {
         if (callback != null) {
           callback.onSuccess();
         }
-        return;
+        return request;
       }
     }
 
@@ -703,6 +703,7 @@ public class RequestCreator {
             errorDrawable, requestKey, tag, callback, noFade);
 
     picasso.enqueueAndSubmit(action);
+    return request;
   }
 
   private Drawable getPlaceholderDrawable() {
