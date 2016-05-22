@@ -3,13 +3,22 @@ apply plugin: 'com.android.library'
 String src_main = 'src/main'
 String src_test = 'src/test'
 
+def getPropertyOrDefault = {
+  String property, Object fallback ->
+    if (hasProperty(property)) {
+      return getProperty(property)
+    } else {
+      return fallback
+    }
+}
+
 android {
-  compileSdkVersion 23
-  buildToolsVersion "23.0.2"
+  compileSdkVersion getPropertyOrDefault('compileSdkVersion', 23)
+  buildToolsVersion getPropertyOrDefault('buildToolsVersion', '23.0.2')
 
   defaultConfig {
-    minSdkVersion 14
-    targetSdkVersion 23
+    minSdkVersion getPropertyOrDefault('minSdkVersion', 14)
+    targetSdkVersion getPropertyOrDefault('targetSdkVersion', 23)
   }
   sourceSets {
     main {
